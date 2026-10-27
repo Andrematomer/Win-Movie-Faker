@@ -22,6 +22,7 @@ import { ExportDialog } from './ExportDialog';
 import { MenuBar, type Menu } from './MenuBar';
 import { PreviewPane } from './PreviewPane';
 import { Storyboard } from './Storyboard';
+import { ClipPane } from './ClipPane';
 import { TaskPane } from './TaskPane';
 import { toggleFullscreen, zoomBy, zoomReset } from './viewControls';
 
@@ -155,6 +156,7 @@ export function App() {
               onExport={() => setExporting(true)}
             />
             <PreviewPane />
+            <ClipPane />
           </div>
           <Storyboard />
           <div class="status-bar">

@@ -1,4 +1,3 @@
-import { useState } from 'preact/hooks';
 import { getMediaDuration } from '../model/assets';
 import {
   patchAudioClips,
@@ -81,9 +80,6 @@ export function TaskPane({ onImport, onAddTitle, onExport }: Props) {
   const oneAudio = total === 1 ? audio[0] : undefined;
 
   const knownSize = [...RECOMMENDED, ...MODERN].some((r) => r.w === project.width && r.h === project.height);
-  const isModern = !RECOMMENDED.some((r) => r.w === project.width && r.h === project.height);
-  const [unlocked, setUnlocked] = useState(isModern);
-  const showModern = unlocked || isModern;
 
   const clipIds = clips.map((c) => c.id);
   const picIds = pics.map((c) => c.id);
@@ -164,185 +160,15 @@ export function TaskPane({ onImport, onAddTitle, onExport }: Props) {
             {RECOMMENDED.map((r) => (
               <option key={r.label} value={`${r.w}x${r.h}`}>{r.label}</option>
             ))}
-            {showModern && MODERN.map((r) => (
+            {MODERN.map((r) => (
               <option key={r.label} value={`${r.w}x${r.h}`}>{r.label}</option>
             ))}
             {!knownSize && <option value={`${project.width}x${project.height}`}>{project.width} × {project.height}</option>}
           </select>
         </label>
-        <div class="check-row">
-          <input
-            id="cb-unlock"
-            type="checkbox"
-            checked={showModern}
-            onChange={(e) => {
-              const on = (e.target as HTMLInputElement).checked;
-              setUnlocked(on);
-              if (!on && isModern) setResolution(640, 480); // back to a recommended size
-            }}
-          />
-          <label for="cb-unlock">Unlock more resolutions (not recommended)</label>
-        </div>
         <Link onClick={onExport}><Icon name="save" /> Save to my computer</Link>
       </details>
 
-      {(clips.length > 0 || audio.length > 1) && (
-        <fieldset class="props">
-          <legend>{total === 1 ? 'Selected clip' : `Selected clips (${total})`}</legend>
-
-          {oneClip?.kind === 'title' && (
-            <>
-              <label>Title</label>
-              <textarea rows={2} value={oneClip.title} onInput={(e) => updateClip(oneClip.id, { title: (e.target as HTMLTextAreaElement).value })} />
-              <label>Subtitle / credits</label>
-              <textarea rows={2} value={oneClip.subtitle} onInput={(e) => updateClip(oneClip.id, { subtitle: (e.target as HTMLTextAreaElement).value })} />
-            </>
-          )}
-
-          {oneClip?.kind === 'video' && (
-            <label>
-              Trim start (s){' '}
-              <input
-                type="number"
-                min={0}
-                step={0.1}
-                value={Number(oneClip.trimStart.toFixed(2))}
-                onInput={(e) => {
-                  const dur = getMediaDuration(oneClip.mediaId);
-                  const v = Math.max(0, Math.min(num(e), Math.max(0, dur - 0.5)));
-                  if (Number.isFinite(v)) updateClip(oneClip.id, { trimStart: v, duration: Math.min(oneClip.duration, Math.max(0.5, dur - v)) });
-                }}
-              />
-            </label>
-          )}
-
-          {pics.length > 0 && (
-            <>
-              <label>
-                Picture fit{' '}
-                <select value={fit.mixed ? '' : fit.value} onChange={(e) => patchClips(picIds, { fit: (e.target as HTMLSelectElement).value as PictureFit }, (c) => c.kind !== 'title')}>
-                  {fit.mixed && <option value="" disabled>(mixed)</option>}
-                  <option value="fit">Fit (black bars)</option>
-                  <option value="fill">Fill (crop edges)</option>
-                  <option value="stretch">Stretch (distort)</option>
-                </select>
-              </label>
-              {checkbox('cb-oldcam', 'Old camera look', oldCam, (on) => patchClips(picIds, { oldCamera: on }), '24 fps, grain, harsh contrast and colours')}
-              {checkbox('cb-wm-hyper', 'Screen recorder watermark', wmHyper, (on) => patchClips(picIds, { wmHyper: on }))}
-              {wmHyper.some(Boolean) && (
-                <input
-                  type="text"
-                  class="wide"
-                  value={hyperText.mixed ? '' : hyperText.value}
-                  placeholder={hyperText.mixed ? '(different texts)' : ''}
-                  onInput={(e) => patchClips(picIds, { wmHyperText: (e.target as HTMLInputElement).value })}
-                />
-              )}
-              {checkbox('cb-wm-site', 'Website watermark (top center)', wmSite, (on) => patchClips(picIds, { wmSite: on }))}
-              {wmSite.some(Boolean) && (
-                <input
-                  type="text"
-                  class="wide"
-                  value={siteText.mixed ? '' : siteText.value}
-                  placeholder={siteText.mixed ? '(different texts)' : ''}
-                  onInput={(e) => patchClips(picIds, { wmSiteText: (e.target as HTMLInputElement).value })}
-                />
-              )}
-            </>
-          )}
-
-          {volumes.length > 0 && (
-            <label>
-              Volume{' '}
-              <input type="range" min={0} max={1} step={0.05} value={volume.value ?? 1} onInput={(e) => setVolume(num(e))} />
-              {volume.mixed ? ' (mixed)' : ''}
-            </label>
-          )}
-
-          {clips.length > 0 && audio.length === 0 && (oneClip || vids.length === 0) && (
-            <label>
-              Duration (s){' '}
-              <input
-                type="number"
-                min={durationBounds(oneClip).min}
-                max={durationBounds(oneClip).max}
-                step={0.5}
-                value={duration.mixed ? '' : Number((duration.value ?? 0).toFixed(2))}
-                placeholder={duration.mixed ? 'mixed' : ''}
-                onInput={(e) => {
-                  const v = num(e);
-                  const b = durationBounds(oneClip);
-                  if ((e.target as HTMLInputElement).value !== '' && v >= b.min) patchClips(clipIds, { duration: Math.min(v, b.max) });
-                }}
-              />
-            </label>
-          )}
-
-          {clips.length > 0 && (
-            <label>
-              Transition in{' '}
-              <select value={transition.mixed ? '' : transition.value} onChange={(e) => patchClips(clipIds, { transitionIn: (e.target as HTMLSelectElement).value })}>
-                {transition.mixed && <option value="" disabled>(mixed)</option>}
-                {TRANSITIONS.map((t) => (
-                  <option value={t.kind} key={t.kind}>{t.label}</option>
-                ))}
-              </select>
-            </label>
-          )}
-
-          {oneClip && oneClip.kind !== 'title' && (
-            <>
-              <button onClick={splitAtPlayhead} title="Cut at the playhead">
-                <Icon name="scissors" /> Split at playhead
-              </button>{' '}
-            </>
-          )}
-          <button onClick={() => removeClips(selectedIds)}>{total === 1 ? 'Remove clip' : `Remove ${total} clips`}</button>
-        </fieldset>
-      )}
-
-      {oneAudio && (
-        <fieldset class="props">
-          <legend>Selected audio</legend>
-          <label>
-            Starts at (s){' '}
-            <input type="number" min={0} step={0.5} value={Number(oneAudio.start.toFixed(2))} onInput={(e) => num(e) >= 0 && updateAudioClip(oneAudio.id, { start: num(e) })} />
-          </label>
-          <label>
-            Trim start (s){' '}
-            <input
-              type="number"
-              min={0}
-              step={0.5}
-              value={Number(oneAudio.trimStart.toFixed(2))}
-              onInput={(e) => {
-                const dur = getMediaDuration(oneAudio.mediaId);
-                const v = Math.max(0, Math.min(num(e), Math.max(0, dur - 0.5)));
-                if (Number.isFinite(v)) updateAudioClip(oneAudio.id, { trimStart: v, duration: Math.min(oneAudio.duration, Math.max(0.5, dur - v)) });
-              }}
-            />
-          </label>
-          <label>
-            Length (s){' '}
-            <input
-              type="number"
-              min={0.5}
-              step={0.5}
-              value={Number(oneAudio.duration.toFixed(2))}
-              onInput={(e) => {
-                const max = getMediaDuration(oneAudio.mediaId) - oneAudio.trimStart;
-                if (num(e) >= 0.5) updateAudioClip(oneAudio.id, { duration: Math.min(num(e), max) });
-              }}
-            />
-          </label>
-          <label>
-            Volume{' '}
-            <input type="range" min={0} max={1} step={0.05} value={oneAudio.volume} onInput={(e) => updateAudioClip(oneAudio.id, { volume: num(e) })} />
-          </label>
-          <button onClick={splitAtPlayhead}><Icon name="scissors" /> Split at playhead</button>{' '}
-          <button onClick={() => removeClips([oneAudio.id])}>Remove</button>
-        </fieldset>
-      )}
     </div>
   );
 }

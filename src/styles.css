@@ -37,7 +37,7 @@ body { background: #3a6ea5; font-size: 12px; }
 .taskpane .props { background: #ece9d8; color: #000; }
 
 .preview { flex: 1; padding: 8px; display: flex; flex-direction: column; align-items: center; min-width: 0; }
-.preview-screen { background: #000; border: 2px inset #aca899; max-width: 100%; max-height: calc(100% - 70px); height: calc(100% - 70px); }
+.preview-screen { background: #000; border: 2px inset #aca899; max-width: 100%; max-height: calc(100% - 34px); height: calc(100% - 34px); }
 .preview-screen canvas { width: 100%; height: 100%; display: block; }
 .seek { width: 100%; margin-top: 6px; }
 .transport { display: flex; align-items: center; gap: 6px; margin-top: 4px; }
@@ -110,3 +110,18 @@ body { background: #3a6ea5; font-size: 12px; }
 .handle.left { left: 0; } .handle.right { right: 0; }
 .handle:hover { background: rgba(255,255,255,.7); }
 .tl-playhead { position: absolute; top: 0; bottom: 0; width: 0; border-left: 2px solid #d00; pointer-events: none; z-index: 5; }
+
+/* right-hand panel: preview controls + selected clip */
+.clippane { background: #ece9d8; color: #000; border-left: 1px solid #aca899; width: 260px; flex: none; }
+.clippane .props { margin-top: 0; }
+.clippane .hint-small { margin-left: 0; color: #555; }
+.transport-box { margin: 0 0 8px; padding: 8px; border: 1px solid #aca899; }
+.transport-box .transport { display: flex; flex-wrap: wrap; gap: 4px; margin: 0; }
+.transport-box .transport button { min-width: 0; }
+.transport-box .timecode { margin-top: 6px; font-size: 13px; }
+
+/* XP.css styles both buttons of each scrollbar end, which gave two arrows per side; keep one per side */
+::-webkit-scrollbar-button:horizontal:start:increment,
+::-webkit-scrollbar-button:horizontal:end:decrement,
+::-webkit-scrollbar-button:vertical:start:increment,
+::-webkit-scrollbar-button:vertical:end:decrement { display: none; width: 0; height: 0; }

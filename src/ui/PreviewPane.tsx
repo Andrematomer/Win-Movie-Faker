@@ -77,18 +77,28 @@ export function PreviewPane() {
         value={time}
         onInput={(e) => setState({ time: Number((e.target as HTMLInputElement).value), playing: false })}
       />
+    </div>
+  );
+}
+
+/** Play / Stop / Full Screen and the timecode (lives in the right-hand panel). */
+export function Transport() {
+  const time = useStore((s) => s.time);
+  const playing = useStore((s) => s.playing);
+  const total = totalDuration();
+  return (
+    <fieldset class="transport-box">
+      <legend>Preview</legend>
       <div class="transport">
-        <button onClick={togglePlay}>
-          {playing ? '⏸ Pause' : '▶ Play'}
-        </button>
+        <button onClick={togglePlay}>{playing ? '⏸ Pause' : '▶ Play'}</button>
         <button onClick={() => setState({ playing: false, time: 0 })}>⏹ Stop</button>
         <button title="Full screen (Esc to leave)" onClick={toggleFullscreen}>
           <Icon name="full" /> Full Screen
         </button>
-        <span class="timecode">
-          {timecode(time)} / {timecode(total)}
-        </span>
       </div>
-    </div>
+      <div class="timecode">
+        {timecode(time)} / {timecode(total)}
+      </div>
+    </fieldset>
   );
 }

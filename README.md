@@ -24,7 +24,7 @@ No install. No account. No upload: your files never leave your computer.
 - Your project is **autosaved** in your browser and reopens where you left off.
 - **Space** plays and pauses, **Left/Right** pick the previous or next clip, **Shift-click** selects a range, **Ctrl-click** adds or removes one, **Ctrl+A** selects everything. Changes apply to every selected clip at once.
 - **Ctrl+Z** undoes, **Ctrl+Y** redoes, **Delete** removes the selected clips.
-- Sizes: three recommended retro sizes, plus HD, Full HD and more behind an "unlock" checkbox.
+- Sizes: three recommended retro sizes, plus HD, Full HD, QHD and 4K.
 
 ## Good to know
 
@@ -53,8 +53,7 @@ It is a static site (Vite + TypeScript + Preact + [XP.css](https://botoxparty.gi
 exporting with WebCodecs and [Mediabunny](https://mediabunny.dev)), deployed to GitHub Pages by
 the workflow in `.github/workflows`.
 
-`CLAUDE.md` has the design decisions.
-
 ## License
 
-TBD (will be an open-source license before the first release).
+MIT. Free to use, fork, change and share, including commercially. Just keep the copyright notice
+(see [LICENSE](LICENSE)) and don't pass it off as your own work.
