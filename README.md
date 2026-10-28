@@ -1,30 +1,14 @@
 # Win Movie Faker
 
 Make a video that looks like it was edited in 2008 and uploaded to YouTube from a laptop webcam.
-Win Movie Faker is a video editor that runs entirely in your browser and imitates the look of a
-2000s Windows XP movie editor, down to the star wipes.
+A video editor that runs entirely in your browser and imitates a 2000s Windows XP movie editor,
+down to the star wipes.
 
-![Win Movie Faker screenshot](docs/screenshot.jpg)
+![Win Movie Faker demo](docs/demonstration.webp)
 
 **[Open Win Movie Faker](https://andrematomer.github.io/Slopdows-Movie-Maker/)**
 
 No install. No account. No upload: your files never leave your computer.
-
-## What you can do
-
-- Import **pictures, videos and music**, drag clips around on the storyboard, trim and split them.
-- Switch to the **Timeline** to see real time: drag clip edges to trim, drag music to move it, and see music waveforms. Keys: **I** sets the start and **O** sets the end of the selected clip at the playhead, **S** splits.
-- Add **title cards** (white text on deep blue, with fades) and credits.
-- Glue clips together with **transitions**: Star Wipe, Iris, Checkerboard, Pixelate, Spin In and Fade.
-- Pick how each picture or video meets the 4:3 screen: **Fit** (black bars), **Fill** (crop) or **Stretch**.
-- Give a clip the **Old camera look**: 24 fps, sensor grain, and harsh early-digital contrast and colour.
-- Turn on **2008 YouTube mode (uglier)**: blurry 4:3 picture, tinny sound, small file. On by default.
-- Add parody **screen-recorder watermarks** per clip (off by default, text is editable), so camera and screen-recording clips can live in one project.
-- Save the result as an **MP4** straight from the browser.
-- Your project is **autosaved** in your browser and reopens where you left off.
-- **Space** plays and pauses, **Left/Right** pick the previous or next clip, **Shift-click** selects a range, **Ctrl-click** adds or removes one, **Ctrl+A** selects everything. Changes apply to every selected clip at once.
-- **Ctrl+Z** undoes, **Ctrl+Y** redoes, **Delete** removes the selected clips.
-- Sizes: three recommended retro sizes, plus HD, Full HD, QHD and 4K.
 
 ## Good to know
 
@@ -33,13 +17,11 @@ No install. No account. No upload: your files never leave your computer.
   friends). Old formats like WMV or AVI are not supported.
 - Autosave keeps copies of your files inside the browser. Clearing site data deletes them.
 - Very long videos or songs use a lot of memory, and saving a movie can make the tab sluggish.
-- The app is still being polished, so rough edges are expected.
 
 ## Not affiliated with Microsoft
 
 Win Movie Faker is a parody and a fan project. It is not made by, endorsed by, or connected to
-Microsoft. It uses no Microsoft code, icons, sounds, logos or fonts. The interface uses the fonts
-already installed on your computer.
+Microsoft. It uses no Microsoft code, icons, sounds, logos or fonts.
 
 ## Run it yourself
 
@@ -49,7 +31,7 @@ npm run dev      # local dev server
 npm run build    # type-check + production build into dist/
 ```
 
-It is a static site (Vite + TypeScript + Preact + [XP.css](https://botoxparty.github.io/XP.css/),
+Static site (Vite + TypeScript + Preact + [XP.css](https://botoxparty.github.io/XP.css/),
 exporting with WebCodecs and [Mediabunny](https://mediabunny.dev)), deployed to GitHub Pages by
 the workflow in `.github/workflows`.
 
