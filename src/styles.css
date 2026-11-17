@@ -1,0 +1,127 @@
+html, body, #app { height: 100%; margin: 0; }
+/* System fonts only. "MS Sans Serif" is used if the OS has it (referencing is fine, bundling is not);
+   Tahoma is what Windows actually renders in practice; the rest are sane fallbacks. */
+:root { --ui-font: "MS Sans Serif", Tahoma, "Segoe UI", Verdana, Geneva, "DejaVu Sans", sans-serif; }
+body, button, input, select, textarea, label, legend, summary, .window, .title-bar, .title-bar-text, .status-bar-field, .menu-item, .menu-title, pre, pre * { font-family: var(--ui-font) !important; }
+body { background: #3a6ea5; font-size: 12px; }
+
+.desktop { height: 100%; padding: 6px; box-sizing: border-box; }
+.app-window { height: 100%; display: flex; flex-direction: column; }
+.app-body { flex: 1; display: flex; flex-direction: column; margin: 0; padding: 0; min-height: 0; background: #ece9d8; }
+
+/* menu bar */
+.menubar { display: flex; background: #ece9d8; border-bottom: 1px solid #aca899; position: relative; z-index: 5; }
+.menu { position: relative; }
+.menu-title { background: none; border: 0; box-shadow: none; padding: 3px 8px; min-width: 0; min-height: 0; font: inherit; }
+.menu-title:hover, .menu-title.open { background: #316ac5; color: #fff; }
+.menu-drop { position: absolute; top: 100%; left: 0; min-width: 190px; background: #fff; border: 1px solid #aca899; box-shadow: 2px 2px 3px rgba(0,0,0,.35); padding: 2px; }
+.menu-drop hr { margin: 2px 0; }
+.menu-item { display: flex; width: 100%; text-align: left; background: none; border: 0; box-shadow: none; padding: 3px 8px 3px 4px; min-width: 0; min-height: 0; font: inherit; }
+.menu-item:hover:not(:disabled) { background: #316ac5; color: #fff; }
+.menu-item:disabled { color: #aca899; }
+.menu-item .check { display: inline-block; width: 16px; }
+
+.toolbar { display: flex; gap: 4px; padding: 4px; border-bottom: 1px solid #aca899; }
+
+/* main area */
+.main { flex: 1; display: flex; min-height: 0; }
+.taskpane { width: 250px; overflow: auto; padding: 8px; box-sizing: border-box; background: linear-gradient(#7ba2e7, #6375d6); color: #fff; }
+.taskpane h3 { margin: 0 0 8px; font-size: 14px; }
+.taskpane details { background: #d6dff7; color: #215dc6; margin-bottom: 8px; padding: 4px 8px 8px; border-radius: 4px; }
+.taskpane summary { font-weight: bold; cursor: pointer; margin-bottom: 4px; }
+.taskpane a { display: block; color: #215dc6; margin: 3px 0; }
+.taskpane label { display: block; margin: 4px 0 2px; }
+.taskpane .check-row { margin: 6px 0 2px; }
+.taskpane .wide { width: 100%; box-sizing: border-box; }
+.taskpane textarea { width: 100%; box-sizing: border-box; }
+.taskpane .props { background: #ece9d8; color: #000; }
+
+.preview { flex: 1; padding: 8px; display: flex; flex-direction: column; align-items: center; min-width: 0; }
+.preview-screen { background: #000; border: 2px inset #aca899; max-width: 100%; max-height: calc(100% - 34px); height: calc(100% - 34px); }
+.preview-screen canvas { width: 100%; height: 100%; display: block; }
+.seek { width: 100%; margin-top: 6px; }
+.transport { display: flex; align-items: center; gap: 6px; margin-top: 4px; }
+.timecode { font-family: "Courier New", monospace; }
+
+/* storyboard */
+.storyboard { min-height: 130px; max-height: 230px; flex-direction: column; align-items: stretch !important; background: #fff; border-top: 2px groove #fff; overflow-x: auto; display: flex; padding: 8px; gap: 0; box-sizing: border-box; }
+.storyboard.drop-hot { outline: 2px dashed #316ac5; outline-offset: -4px; }
+.storyboard .hint { color: #888; margin: 30px auto; }
+.slot { display: flex; align-items: center; }
+.trans { display: flex; flex-direction: column; align-items: center; background: none; border: 0; box-shadow: none; min-width: 56px; min-height: 0; padding: 0 2px; color: #c60; font-size: 18px; }
+.trans:hover .tr-icon { outline: 1px dotted #000; outline-offset: 1px; }
+.trans small { font-size: 9px; color: #444; }
+.tile { width: 96px; padding: 4px; border: 2px solid transparent; cursor: grab; }
+.tile.selected { background: #316ac5; color: #fff; }
+.thumb { width: 96px; height: 72px; background: #000; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.thumb img { max-width: 100%; max-height: 100%; }
+.thumb-title { width: 100%; height: 100%; background: #000080; color: #fff; display: flex; align-items: center; justify-content: center; font-family: Arial, sans-serif; font-size: 13px; text-align: center; }
+.tile-label { margin-top: 2px; text-align: center; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* dialogs */
+.modal-back { position: fixed; inset: 0; background: rgba(0,0,0,.25); display: flex; align-items: center; justify-content: center; z-index: 50; }
+.modal { width: 340px; }
+.modal-buttons { text-align: right; }
+
+@media (max-width: 760px) {
+  .taskpane { display: none; }
+}
+
+.clips-row { display: flex; align-items: flex-start; }
+.icon { vertical-align: -3px; image-rendering: pixelated; }
+.thumb { position: relative; }
+.thumb .badge { position: absolute; right: 1px; bottom: 1px; background: #000a; line-height: 0; padding: 1px; }
+.audio-lane { display: flex; align-items: center; margin-top: 6px; height: 24px; background: #f4f1e4; border: 1px solid #aca899; white-space: nowrap; overflow: hidden; flex: none; }
+.lane-label { flex: none; padding: 0 6px; font-size: 10px; background: #ece9d8; height: 100%; display: flex; align-items: center; gap: 3px; margin-right: 4px; }
+.audio-bar { flex: none; height: 18px; min-height: 0; min-width: 0; padding: 0 4px; overflow: hidden; text-overflow: ellipsis; font-size: 10px; background: #f2c230; border: 1px solid #8a6d00; box-shadow: none; }
+.audio-bar.selected { background: #316ac5; color: #fff; border-color: #fff; }
+.status-bar .notice { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.taskpane a { display: flex; align-items: center; gap: 4px; }
+.taskpane .props { margin: 0 0 8px; padding: 14px 8px 8px; border: 1px solid #aca899; position: relative; }
+.taskpane .props legend { position: static; background: #ece9d8; color: #0046d5; padding: 0 4px; margin-left: -2px; }
+.preview-screen:fullscreen { width: 100vw; height: 100vh; max-height: none; border: 0; display: flex; align-items: center; justify-content: center; aspect-ratio: auto !important; }
+.preview-screen:fullscreen canvas { width: auto; height: auto; max-width: 100vw; max-height: 100vh; aspect-ratio: 4 / 3; }
+.tr-icon { border: 1px solid #1c1c1c; margin-bottom: 2px; }
+.hint-small { margin: 0 0 6px 18px; font-size: 10px; color: #3a4a8a; }
+.taskpane a.disabled { color: #8a93b5; cursor: default; text-decoration: none; }
+
+.tile-dur { text-align: center; font-size: 10px; opacity: .75; }
+.view-switch { display: flex; gap: 2px; margin-bottom: 4px; flex: none; }
+.view-switch button { min-width: 0; min-height: 0; padding: 1px 10px; font-size: 11px; }
+.view-switch button.on { box-shadow: inset 1px 1px 2px #0006; background: #f4f1e4; }
+
+.timeline { display: flex; flex: none; height: 150px; gap: 4px; }
+.tl-zoom { display: flex; flex-direction: column; gap: 2px; }
+.tl-zoom button { min-width: 22px; min-height: 22px; padding: 0; }
+.tl-scroll { flex: 1; overflow-x: auto; overflow-y: hidden; position: relative; border: 1px solid #aca899; background: #f7f5ea; }
+.tl-content { position: relative; height: 100%; user-select: none; touch-action: none; }
+.tl-ruler { position: relative; height: 16px; border-bottom: 1px solid #aca899; background: #ece9d8; cursor: pointer; }
+.tl-ruler .tick { position: absolute; top: 0; height: 100%; border-left: 1px solid #888; padding-left: 2px; font-size: 9px; line-height: 16px; pointer-events: none; }
+.tl-lane { position: relative; margin-top: 3px; border-bottom: 1px dotted #ccc; }
+.tl-clip { position: absolute; top: 0; bottom: 0; box-sizing: border-box; border: 1px solid #1c3a8a; background: #6f9be8 center / auto 100% repeat-x; overflow: hidden; cursor: pointer; }
+.tl-clip.title { background: #000080; color: #fff; }
+.tl-clip.audio { background: #f2c230; border-color: #8a6d00; cursor: grab; }
+.tl-clip.selected { outline: 2px solid #fff; box-shadow: 0 0 0 3px #316ac5; z-index: 2; }
+.tl-label { position: absolute; left: 6px; top: 1px; right: 6px; font-size: 10px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-shadow: 0 0 2px #fff, 0 0 2px #fff; pointer-events: none; }
+.tl-clip.title .tl-label { text-shadow: none; }
+.tl-clip .wave { position: absolute; left: 0; bottom: 0; height: calc(100% - 14px); }
+.tl-overlap { position: absolute; left: 0; top: 0; bottom: 0; background: repeating-linear-gradient(45deg, rgba(255,255,255,.55) 0 3px, rgba(255,255,255,.1) 3px 6px); pointer-events: none; }
+.handle { position: absolute; top: 0; bottom: 0; width: 7px; cursor: ew-resize; background: rgba(0,0,0,.25); z-index: 3; }
+.handle.left { left: 0; } .handle.right { right: 0; }
+.handle:hover { background: rgba(255,255,255,.7); }
+.tl-playhead { position: absolute; top: 0; bottom: 0; width: 0; border-left: 2px solid #d00; pointer-events: none; z-index: 5; }
+
+/* right-hand panel: preview controls + selected clip */
+.clippane { background: #ece9d8; color: #000; border-left: 1px solid #aca899; width: 260px; flex: none; }
+.clippane .props { margin-top: 0; }
+.clippane .hint-small { margin-left: 0; color: #555; }
+.transport-box { margin: 0 0 8px; padding: 8px; border: 1px solid #aca899; }
+.transport-box .transport { display: flex; flex-wrap: wrap; gap: 4px; margin: 0; }
+.transport-box .transport button { min-width: 0; }
+.transport-box .timecode { margin-top: 6px; font-size: 13px; }
+
+/* XP.css styles both buttons of each scrollbar end, which gave two arrows per side; keep one per side */
+::-webkit-scrollbar-button:horizontal:start:increment,
+::-webkit-scrollbar-button:horizontal:end:decrement,
+::-webkit-scrollbar-button:vertical:start:increment,
+::-webkit-scrollbar-button:vertical:end:decrement { display: none; width: 0; height: 0; }
